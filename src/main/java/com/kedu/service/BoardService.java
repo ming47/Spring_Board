@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kedu.dao.BoardDAO;
@@ -35,7 +36,8 @@ public class BoardService {
 	public int deleteBySeq(int seq) {
 		return bDao.deleteBySeq(seq);
 	}
-
+	
+	@Transactional
 	public int write(BoardDTO dto,MultipartFile[] files,HttpSession session) throws Exception{
 		int parent_seq= bDao.getSeq();
 		dto.setSeq(parent_seq);
@@ -50,10 +52,9 @@ public class BoardService {
 				String oriName = file.getOriginalFilename();
 				String sysName = UUID.randomUUID()+"_" + oriName;
 				file.transferTo(new File(realPath + "/" + sysName));
-				int fileResult=fDao.insert(new FileDTO(0,oriName,sysName,parent_seq));
+				fDao.insert(new FileDTO(0,oriName,sysName,parent_seq));
 			}
 		}	
-		
 		return bDao.write(dto);
 	}
 	

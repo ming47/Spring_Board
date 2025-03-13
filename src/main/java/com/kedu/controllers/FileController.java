@@ -36,7 +36,7 @@ public class FileController {
 		return list;
 	}
 	
-	@RequestMapping("/download") // 서비스계층이 굳이 필요없는 예외코드
+	@RequestMapping("/download") // 서비스계층이 굳이 필요없는 예외코드 (각각 코드 의존성이 높아 나누기 애매함 )
 	public void download(String sysName, String oriName, HttpServletResponse response) throws Exception{
 
 		String realPath = session.getServletContext().getRealPath("upload");
